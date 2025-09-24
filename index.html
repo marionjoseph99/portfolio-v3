@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marjo Paguia</title>
+    <link rel="stylesheet" href="styles.css?v=5">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23121212'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Syne, Arial, sans-serif' font-weight='800' font-size='28' fill='%23D5FF40'%3EMP%3C/text%3E%3C/svg%3E">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+</head>
+<body class="loading">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader-text">LOADING</div>
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <!-- Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    
+    <!-- Navigation -->
+    <div class="nav-toggle">
+        <div class="nav-toggle-bar"></div>
+    </div>
+    
+    <nav class="navigation">
+        <div class="nav-bg"></div>
+        <div class="nav-content">
+            <div class="nav-header">
+                <div class="logo">MP</div>
+                <div class="nav-close"></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link" data-text="Home">Home</a></li>
+                <li><a href="#about" class="nav-link" data-text="About">About</a></li>
+                <li><a href="#projects" class="nav-link" data-text="Projects">Projects</a></li>
+                <li><a href="#services" class="nav-link" data-text="Services">Services</a></li>
+                <li><a href="#gallery" class="nav-link" data-text="Gallery">Gallery</a></li>
+                <li><a href="#awards" class="nav-link" data-text="Awards">Awards</a></li>
+                <li><a href="#contact" class="nav-link" data-text="Contact">Contact</a></li>
+            </ul>
+            <div class="nav-info">
+                <div class="nav-info-block">
+                    <h4>Contact</h4>
+                    <a href="mailto:norioniomarjo@gmail.com">norioniomarjo@gmail.com</a>
+                    <a href="tel:+639917484985">+639917484985</a>
+                </div>
+                <div class="nav-info-block">
+                    <h4>Connect</h4>
+                    <div class="nav-social">
+                        <a href="https://www.facebook.com/people/MStudio/100093286052861/" class="social-link" target="_blank" rel="noopener noreferrer">Facebook</a>
+                        <a href="https://www.instagram.com/13_1_18_jo/?next=%2F" class="social-link" target="_blank" rel="noopener noreferrer">Instagram</a>
+                        <a href="https://www.linkedin.com/in/marjo-paguia-6b5839144/" class="social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <a href="https://www.behance.net/marjopaguia" class="social-link" target="_blank" rel="noopener noreferrer">Behance</a>
+                        <a href="https://www.tiktok.com/@m.studio24?is_from_webapp=1&sender_device=pc" class="social-link" target="_blank" rel="noopener noreferrer">TikTok</a>
+                    </div>
+            </div>
+        </div>
+    </nav>
+
+    <main data-scroll-container>
+        <!-- Hero Section -->
+        <section id="home" class="hero" data-scroll-section>
+            <div class="hero-bg">
+                <div class="hero-bg-overlay"></div>
+            </div>
+                <h1 class="hero-title split-text">
+                    <span class="hero-word">Aspiring</span>
+                    <span class="hero-word accent">Architect</span>
+                    <span class="hero-word">&</span>
+                    <span class="hero-word">3D Visualizer</span>
+                </h1>
+                <div class="hero-scroll">
+                    <div class="scroll-line"></div>
+                    <span>SCROLL</span>
+                </div>
+            <div class="hero-footer">
+                <div class="hero-year">© 2025</div>
+                <div class="hero-location">General Trias, Cavite, Philippines</div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about" data-scroll-section>
+            <div class="container">
+                <div class="about-header">
+                    <span class="section-number">01</span>
+                    <h2 class="section-title split-text">About</h2>
+                </div>
+                <div class="about-grid">
+                    <div class="about-image">
+                        <div class="image-wrapper" data-scroll data-scroll-speed="1">
+                            <img src="images/profile.png" alt="Architect Profile" class="profile-image">
+                        </div>
+                    </div>
+                    <div class="about-text">
+                        <p class="large-text" data-scroll data-scroll-speed="0.5">
+                            A passionate architecture student and visual artist from General Trias, Cavite, Philippines, dedicated to crafting innovative and visually compelling designs.
+                        </p>
+                        <p data-scroll data-scroll-speed="0.2">
+                            With a keen eye for detail and a love for creative expression, I strive to blend artistry with functionality to bring unique visions to life. I'm a visual artist, 3D visualizer, and aspiring architect with a deep passion for art and design. My dedication to my craft is reflected in the effort I put into each project, ensuring that my clients are satisfied with the results.
+                        </p>
+                        <div class="stats-grid">
+                            <div class="stat-item" data-scroll data-scroll-speed="0.3">
+                                <div class="stat-number">5+</div>
+                                <div class="stat-label">Years Experience</div>
+                            </div>
+                            <div class="stat-item" data-scroll data-scroll-speed="0.4">
+                                <div class="stat-number">10+</div>
+                                <div class="stat-label">Projects</div>
+                            </div>
+                            <div class="stat-item" data-scroll data-scroll-speed="0.5">
+                                <div class="stat-number">6</div>
+                                <div class="stat-label">Awards</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="education">
+                    <div class="education-header">
+                        <span class="section-number">01.1</span>
+                        <h3 class="section-title">Education</h3>
+                    </div>
+                    <div class="education-timeline">
+                        <div class="edu-item" data-scroll data-scroll-speed="0.3">
+                            <div class="edu-left">
+                                <div class="edu-year">2024 — 2025</div>
+                                <div class="edu-school">National University PH</div>
+                                <div class="edu-location">Calamba, Laguna</div>
+                            </div>
+                            <div class="edu-right">
+                                <div class="edu-degree">B.S. Architecture</div>
+                                <div class="edu-notes">Ongoing studies with focus on architectural design and visualization.</div>
+                            </div>
+                        </div>
+
+                        <div class="edu-item" data-scroll data-scroll-speed="0.4">
+                            <div class="edu-left">
+                                <div class="edu-year">2019 — 2024</div>
+                                <div class="edu-school">EARIST</div>
+                                <div class="edu-location">Manila, Philippines</div>
+                            </div>
+                            <div class="edu-right">
+                                <div class="edu-degree">B.S. Architecture</div>
+                                <div class="edu-notes">Studio projects, technical drafting, and urban design fundamentals.</div>
+                            </div>
+                        </div>
+
+                        <div class="edu-item" data-scroll data-scroll-speed="0.5">
+                            <div class="edu-left">
+                                <div class="edu-year">2013 — 2019</div>
+                                <div class="edu-school">Mandaluyong City High School</div>
+                                <div class="edu-location">Mandaluyong, Philippines</div>
+                            </div>
+                            <div class="edu-right">
+                                <div class="edu-degree">JHS & SHS</div>
+                                <div class="edu-notes">Foundation in technical drafting and visual arts.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills" data-scroll-section>
+            <div class="container">
+                <div class="skills-header">
+                    <span class="section-number">02</span>
+                    <h2 class="section-title split-text">Skills</h2>
+                </div>
+                <p class="skills-description">
+                    A showcase of my expertise in architecture and visual arts, highlighting my proficiency in design, rendering, and creative expression. From technical drafting to digital artistry, these skills define my passion for innovation and aesthetics.
+                </p>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <div class="skill-name">Autodesk AutoCAD</div>
+                        <div class="skill-bar"><div class="skill-progress" data-progress="90"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">Lumion</div>
+                        <div class="skill-bar"><div class="skill-progress" data-progress="90"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">Autodesk Revit</div>
+                        <div class="skill-bar"><div class="skill-progress" data-progress="80"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">Adobe Photoshop</div>
+                        <div class="skill-bar"><div class="skill-progress" data-progress="95"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">SketchUp Pro</div>
+                        <div class="skill-bar"><div class="skill-progress" data-progress="100"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">Adobe Illustrator</div>
+                        <div class="skill-bar"><div class="skill-progress" data-progress="65"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">D5 Render</div>
+                        <div class="skill-bar"><div class="skill-progress" data-progress="90"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">Adobe Premiere Pro</div>
+                        <div class="skill-bar"><div class="skill-progress" data-progress="70"></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects" data-scroll-section>
+            <div class="container">
+                <div class="projects-header">
+                    <span class="section-number">03</span>
+                    <h2 class="section-title split-text">Projects</h2>
+                    <div class="filter-categories">
+                        <button class="filter-btn active" data-filter="all">ALL</button>
+                        <button class="filter-btn" data-filter="architecture">ARCHITECTURE</button>
+                        <button class="filter-btn" data-filter="planning">PLANNING</button>
+                        <button class="filter-btn" data-filter="residential">RESIDENTIAL</button>
+                    </div>
+                </div>
+                
+                <div class="projects-grid">
+                    <!-- Airport Project -->
+                    <a href="#" class="project-item large" data-category="architecture" data-project="airport" tabindex="0">
+                        <div class="project-side-title">Airport</div>
+                        <div class="project-image">
+                            <img src="portfolio/cover/airport_new.webp" alt="Sangley Point Domestic Airport" onerror="this.onerror=null; this.src='https://placehold.co/800x600/121212/ffffff?text=Airport+Project';">
+                        </div>
+                        <div class="project-info">
+                            <h3>Sangley Point Domestic Airport</h3>
+                            <div class="project-meta">
+                                <span class="project-year">2023</span>
+                                <span class="project-category">ARCHITECTURE</span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Amping Project -->
+                    <a href="#" class="project-item" data-category="architecture" data-project="amping" tabindex="0">
+                        <div class="project-side-title">Hospital</div>
+                        <div class="project-image">
+                            <img src="portfolio/cover/hospital_new.jpg" alt="Amping Children's Hospital" onerror="this.onerror=null; this.src='https://placehold.co/600x400/121212/ffffff?text=Amping+Project';">
+                        </div>
+                        <div class="project-info">
+                            <h3>Amping Children's Hospital</h3>
+                            <div class="project-meta">
+                                <span class="project-year">2022</span>
+                                <span class="project-category">HOSPITAL</span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Marahuyo Project -->
+                    <a href="#" class="project-item medium" data-category="architecture" data-project="marahuyo" tabindex="0">
+                        <div class="project-side-title">Baywalk</div>
+                        <div class="project-image">
+                            <img src="portfolio/cover/baywalk_new.jpg" alt="Marahuyo: Revitalization of Calamba Laguna Baywalk" onerror="this.onerror=null; this.src='https://placehold.co/700x500/121212/ffffff?text=Marahuyo+Project';">
+                        </div>
+                        <div class="project-info">
+                            <h3>Marahuyo: Revitalization of Calamba Laguna Baywalk</h3>
+                            <div class="project-meta">
+                                <span class="project-year">2021</span>
+                                <span class="project-category">ARCHITECTURE</span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Marikina Project -->
+                    <a href="#" class="project-item" data-category="planning" data-project="marikina" tabindex="0">
+                        <div class="project-side-title">Riverside</div>
+                        <div class="project-image">
+                            <img src="portfolio/cover/riverpark_new.jpg" alt="Marikina Riverside Revitalization" onerror="this.onerror=null; this.src='https://placehold.co/600x400/121212/ffffff?text=Marikina+Project';">
+                        </div>
+                        <div class="project-info">
+                            <h3>Marikina Riverside Revitalization</h3>
+                            <div class="project-meta">
+                                <span class="project-year">2020</span>
+                                <span class="project-category">PLANNING</span>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- Subdivision Project -->
+                    <a href="#" class="project-item medium" data-category="planning" data-project="subdivision" tabindex="0">
+                        <div class="project-side-title">Subdivision</div>
+                        <div class="project-image">
+                            <img src="portfolio/cover/subdivision_new.webp" alt="Hinabi Subdivision Complex" onerror="this.onerror=null; this.src='https://placehold.co/700x500/121212/ffffff?text=Subdivision+Project';">
+                        </div>
+                        <div class="project-info">
+                            <h3>Hinabi Subdivision Complex</h3>
+                            <div class="project-meta">
+                                <span class="project-year">2019</span>
+                                <span class="project-category">PLANNING</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="services" data-scroll-section>
+            <div class="container">
+                <div class="services-header">
+                    <span class="section-number">04</span>
+                    <h2 class="section-title split-text">Services</h2>
+                </div>
+                <p class="services-intro">I specialize in delivering architectural designs, immersive 3D renderings, captivating traditional and digital art, and accurate technical drawings that effectively communicate and realize creative visions.</p>
+
+                <div class="services-grid">
+                    <article class="service-card" data-scroll>
+                        <div class="service-badge">3D DESIGN</div>
+                        <h3 class="service-title">3D Modelling</h3>
+                        <p class="service-description">High‑quality 3D models for architectural design, product visualization, and creative projects—bringing concepts to life with precision and flair.</p>
+                        <a href="#contact" class="btn btn-accent service-cta">See more</a>
+                    </article>
+
+                    <article class="service-card" data-scroll>
+                        <div class="service-badge">VISUALIZATION</div>
+                        <h3 class="service-title">Rendering</h3>
+                        <p class="service-description">Photorealistic architectural and interior renderings that present your designs with depth, realism, and visual impact.</p>
+                        <a href="#contact" class="btn btn-accent service-cta">See more</a>
+                    </article>
+
+                    <article class="service-card" data-scroll>
+                        <div class="service-badge">ILLUSTRATION</div>
+                        <h3 class="service-title">Manual Drawings</h3>
+                        <p class="service-description">Hand‑crafted architectural and artistic drawings that convey concepts with authenticity, detail, and a personal touch.</p>
+                        <a href="#contact" class="btn btn-accent service-cta">See more</a>
+                    </article>
+
+                    <article class="service-card" data-scroll>
+                        <div class="service-badge">LAYOUT</div>
+                        <h3 class="service-title">Presentation Board Layout</h3>
+                        <p class="service-description">Clean and professional layouts that clearly present design ideas, concepts, and technical details for impactful reviews.</p>
+                        <a href="#contact" class="btn btn-accent service-cta">See more</a>
+                    </article>
+
+                    <article class="service-card" data-scroll>
+                        <div class="service-badge">WALKTHROUGH</div>
+                        <h3 class="service-title">Architectural Walkthrough</h3>
+                        <p class="service-description">Immersive visual experiences that highlight spatial relationships, materials, and the overall design atmosphere.</p>
+                        <a href="#contact" class="btn btn-accent service-cta">See more</a>
+                    </article>
+
+                    <article class="service-card" data-scroll>
+                        <div class="service-badge">WEB DESIGN & DEVELOPMENT</div>
+                        <h3 class="service-title">Personal Portfolio Website</h3>
+                        <p class="service-description">Custom‑coded portfolio sites for architecture students and pros—clean, mobile‑friendly, and built from scratch.</p>
+                        <a href="#contact" class="btn btn-accent service-cta">See more</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="gallery" data-scroll-section>
+            <div class="container">
+                <div class="gallery-header">
+                    <span class="section-number">05</span>
+                    <h2 class="section-title split-text">Gallery</h2>
+                    <div class="gallery-filters">
+                        <button class="gallery-filter-btn active" data-gallery-filter="all">ALL</button>
+                        <button class="gallery-filter-btn" data-gallery-filter="manual">MANUAL DRAWINGS</button>
+                        <button class="gallery-filter-btn" data-gallery-filter="interior">INTERIOR RENDERING</button>
+                        <button class="gallery-filter-btn" data-gallery-filter="exterior">EXTERIOR RENDERING</button>
+                    </div>
+                </div>
+
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Populated by script.js -->
+                </div>
+                <div class="gallery-actions">
+                    <button id="gallerySeeMore" class="btn btn-accent">See more</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Modal -->
+        <div class="project-modal">
+            <div class="modal-overlay"></div>
+            <div class="modal-container">
+                <div class="modal-close">✕</div>
+                <div class="modal-content">
+                    <div class="modal-gallery">
+                        <!-- Project images will load here -->
+                    </div>
+                    <div class="modal-info">
+                        <h2 class="modal-title"></h2>
+                        <div class="modal-meta">
+                            <div class="modal-year"></div>
+                            <div class="modal-category"></div>
+                        </div>
+                        <div class="modal-description"></div>
+                        <div class="modal-details">
+                            <div class="modal-detail">
+                                <h4>Location</h4>
+                                <p class="modal-location"></p>
+                            </div>
+                            <div class="modal-detail">
+                                <h4>Area</h4>
+                                <p class="modal-area"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-nav">
+                    <button class="modal-prev">Previous</button>
+                    <button class="modal-next">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Awards Section -->
+        <section id="awards" class="awards" data-scroll-section>
+            <div class="container">
+                <div class="awards-header">
+                    <span class="section-number">06</span>
+                    <h2 class="section-title split-text">Awards</h2>
+                </div>
+                
+                <div class="awards-list">
+                    <div class="awards-item" data-scroll>
+                        <div class="award-year">2023</div>
+                        <div class="award-content">
+                            <h3 class="award-title">NATIONAL ANTHEM MUSIC VIDEO MAKING CONTEST</h3>
+                            <p class="award-description">Grand Prize</p>
+                        </div>
+                    </div>
+                    
+                    <div class="awards-item" data-scroll>
+                        <div class="award-year">2022</div>
+                        <div class="award-content">
+                            <h3 class="award-title">GOV. NEPTALI GONZALES AWARDEE</h3>
+                            <p class="award-description">Awardee</p>
+                        </div>
+                    </div>
+                    
+                    <div class="awards-item" data-scroll>
+                        <div class="award-year">2021</div>
+                        <div class="award-content">
+                            <h3 class="award-title">ACADEMIC EXCELLENCE AWARD</h3>
+                            <p class="award-description">With Honors</p>
+                        </div>
+                    </div>
+                    
+                    <div class="awards-item" data-scroll>
+                        <div class="award-year">2020</div>
+                        <div class="award-content">
+                            <h3 class="award-title">SPECIFIC DISCIPLINE AWARD</h3>
+                            <p class="award-description">Technical Drafting</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section (Timeline) -->
+        <section id="experience" class="experience" data-scroll-section>
+            <div class="container">
+                <div class="experience-header">
+                    <span class="section-number">07</span>
+                    <h2 class="section-title split-text">Experience</h2>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item" data-scroll>
+                        <div class="timeline-year">2025-present</div>
+                        <div class="timeline-content">
+                            <h3>CAD COUNTERTOP DESIGNER</h3>
+                            <div class="timeline-company">SOLUTIONCX</div>
+                            <p class="timeline-description">Produce accurate countertop shop drawings and cut sheets from field measurements, translating design intent into fabrication‑ready plans for residential and commercial projects.</p>
+                            <ul class="timeline-achievements">
+                                <li>Draft detailed plans, elevations, seam locations, and edge profiles for quartz, granite, and solid surface systems.</li>
+                                <li>Create CNC‑ready layouts; annotate sink/cooktop cutouts and tolerances; manage material takeoffs.</li>
+                                <li>Coordinate with installers and sales to resolve site issues and update revisions quickly.</li>
+                                <li>San Pedro, Laguna</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item" data-scroll>
+                        <div class="timeline-year">2023—2025</div>
+                        <div class="timeline-content">
+                            <h3>SOLAR PROPOSAL DESIGNER</h3>
+                            <div class="timeline-company">SOLUTIONCX</div>
+                            <p class="timeline-description">Create pre‑sales solar proposals with clear system layouts, production estimates, and concise documentation that support permitting and client decisions.</p>
+                            <ul class="timeline-achievements">
+                                <li>Prepare PV layouts, panel counts, and inverter/optimizer configurations with clean roof/ground plans.</li>
+                                <li>Perform shade/production estimates; assemble bills of materials and savings/ROI summaries.</li>
+                                <li>Draft single‑line diagrams and basic plan sheets aligned with utility/AHJ requirements.</li>
+                                <li>San Pedro, Laguna</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item" data-scroll>
+                        <div class="timeline-year">2019—present</div>
+                        <div class="timeline-content">
+                            <h3>FREELANCE ARCHITECTURAL STUDENT</h3>
+                            <div class="timeline-company">M.STUDIO</div>
+                            <p class="timeline-description">Provide concept design, 3D visualization, and presentation materials for academic works and small client projects, balancing aesthetics, clarity, and deadlines.</p>
+                            <ul class="timeline-achievements">
+                                <li>Develop SketchUp/Revit models; materials, lighting, and scene setup; render with Lumion/D5.</li>
+                                <li>Prepare presentation boards, diagrams, and technical drawings with clear hierarchy.</li>
+                                <li>Collaborate with clients/mentors; manage feedback loops and version control.</li>
+                                <li>General Trias, Cavite</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact" data-scroll-section>
+            <div class="contact-bg">
+                <div class="contact-bg-overlay"></div>
+            </div>
+            <div class="container">
+                <div class="contact-header">
+                    <span class="section-number">08</span>
+                    <h2 class="section-title split-text">Contact</h2>
+                </div>
+                
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h3 class="contact-title">Let's create something extraordinary</h3>
+                        <p class="contact-text">Ready to bring your architectural vision to life? I'd love to hear about your project.</p>
+                        <div class="contact-quick-actions">
+                            <a class="btn btn-accent" href="mailto:norioniomarjo@gmail.com">Email Me</a>
+                            <a class="btn btn-ghost" href="tel:+639917484985">Call Me</a>
+                        </div>
+                        
+                        <div class="contact-details">
+                            <div class="contact-method">
+                                <h4>Email</h4>
+                                <a href="mailto:norioniomarjo@gmail.com">norioniomarjo@gmail.com</a>
+                            </div>
+                            
+                            <div class="contact-method">
+                                <h4>Phone</h4>
+                                <a href="tel:+639917484985">+639917484985</a>
+                            </div>
+                            
+                            <div class="contact-method">
+                                <h4>Website</h4>
+                                <address>marjo.site</address>
+                            </div>
+                        </div>
+                        
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/people/MStudio/100093286052861/" class="social-link" target="_blank" rel="noopener noreferrer">Facebook</a>
+                            <a href="https://www.instagram.com/13_1_18_jo/?next=%2F" class="social-link" target="_blank" rel="noopener noreferrer">Instagram</a>
+                            <a href="https://www.linkedin.com/in/marjo-paguia-6b5839144/" class="social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                            <a href="https://www.behance.net/marjopaguia" class="social-link" target="_blank" rel="noopener noreferrer">Behance</a>
+                            <a href="https://www.tiktok.com/@m.studio24?is_from_webapp=1&sender_device=pc" class="social-link" target="_blank" rel="noopener noreferrer">TikTok</a>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer" data-scroll-section>
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-logo">Marjo Paguia</div>
+                    <div class="footer-nav">
+                        <a href="#home">Home</a>
+                        <a href="#about">About</a>
+                        <a href="#projects">Projects</a>
+                        <a href="#awards">Awards</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                    <div class="footer-copy">
+                        &copy; 2024 — All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+                <!-- Safety fallback: if the main script fails to hide the preloader, do it after a delay -->
+            <script>
+                window.addEventListener('load', function () {
+                    var preloader = document.querySelector('.preloader');
+                    if (!preloader) return;
+                    // Give main script time to animate out (~1.5s). If still visible after 3s, hide it.
+                    setTimeout(function(){
+                        if (getComputedStyle(preloader).display !== 'none') {
+                            preloader.style.opacity = '0';
+                                setTimeout(function(){
+                                    preloader.style.display = 'none';
+                                    document.body.classList.remove('loading');
+                                }, 500);
+                        }
+                    }, 3000);
+                });
+            </script>
+            <script src="script.js?v=4"></script>
+</body>
+</html>
