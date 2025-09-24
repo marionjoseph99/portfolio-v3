@@ -67,7 +67,7 @@
 		"subdivision": {
 			title: "Hinabi Subdivision Complex",
 			year: "2019",
-			category: "PLANNING",
+			category: "RESIDENTIAL",
 			description: "A subdivision complex plan emphasizing neighborhood connectivity, open spaces, and livable streets.",
 			location: "General Trias, Cavite, Philippines",
 			area: "—",
@@ -78,6 +78,19 @@
 				"portfolio/subdivision/PAGE 4.png"
 			]
 		}
+	};
+
+	// Add Plaza project
+	window.projectsData["plaza"] = {
+		title: "Plaza",
+		year: "2022",
+		category: "PLANNING",
+		description: "A public plaza concept focusing on circulation, shade, and community gathering.",
+		location: "—",
+		area: "—",
+		images: [
+			"portfolio/plaza/plaza.png"
+		]
 	};
 
 	document.addEventListener('DOMContentLoaded', function() {
