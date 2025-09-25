@@ -299,6 +299,40 @@
 		window.addEventListener('load', sizeProjectSideTitles);
 		window.addEventListener('resize', () => { sizeProjectSideTitles(); });
 
+		// Auto-fit section headings to prevent wrapping/overflow
+		function autoFitHeadings() {
+			const headings = document.querySelectorAll('.section-title');
+			headings.forEach(h => {
+				// Restore base size on each run so we can recompute correctly
+				const base = h.getAttribute('data-base-font');
+				if (base) {
+					h.style.fontSize = base;
+				} else {
+					// Cache the computed base size once (px)
+					const cs = window.getComputedStyle(h);
+					const computed = cs.fontSize || '32px';
+					h.setAttribute('data-base-font', computed);
+				}
+				// Ensure single-line measurement context
+				h.style.whiteSpace = 'nowrap';
+				// Small safety delay if fonts are still loading
+				const containerWidth = h.clientWidth;
+				const contentWidth = h.scrollWidth;
+				if (containerWidth <= 0 || contentWidth <= 0) return;
+				if (contentWidth > containerWidth) {
+					const currentPx = parseFloat(window.getComputedStyle(h).fontSize);
+					if (!currentPx || !isFinite(currentPx)) return;
+					const ratio = Math.max(0.6, Math.min(1, (containerWidth - 2) / contentWidth));
+					const newPx = Math.max(18, Math.floor(currentPx * ratio * 0.98)); // never below 18px
+					h.style.fontSize = newPx + 'px';
+				}
+			});
+		}
+
+		// Run after layout/fonts settle
+		window.addEventListener('load', autoFitHeadings);
+		window.addEventListener('resize', () => { autoFitHeadings(); });
+
 
 	    // Scroll animations
 	    const animateElements = document.querySelectorAll('.animate');
@@ -363,10 +397,14 @@
 	        if (!gallery) return;
 	        gallery.innerHTML = '';
 	        const imgs = Array.isArray(projectData.images) ? projectData.images : [];
+	        // Mark single-image vs multi-image for layout rules
+	        gallery.classList.toggle('single', imgs.length <= 1);
 	        imgs.forEach(src => {
 	            const img = document.createElement('img');
 	            img.src = src;
 	            img.alt = projectData.title || 'Project image';
+	            // Click to open zoom overlay
+	            img.addEventListener('click', () => openZoom(src, img.alt));
 	            gallery.appendChild(img);
 	        });
 	    }
@@ -426,6 +464,16 @@
 	        const location = modal.querySelector('.modal-location');
 	        const area = modal.querySelector('.modal-area');
 	        
+	        // Ensure information is placed before gallery for better reading order
+	        const contentWrap = modal.querySelector('.modal-content');
+	        if (contentWrap) {
+	        	const info = contentWrap.querySelector('.modal-info');
+	        	const gallery = contentWrap.querySelector('.modal-gallery');
+	        	if (info && gallery && info.nextElementSibling !== gallery) {
+	        		contentWrap.insertBefore(info, gallery);
+	        	}
+	        }
+	        
 	        if (title) title.textContent = projectData.title;
 	        if (year) year.textContent = projectData.year;
 	        if (category) category.textContent = projectData.category.toUpperCase();
@@ -435,6 +483,13 @@
 	        
 	        // Load gallery images
 	        loadProjectImages(projectData);
+
+	        // Ensure zoom overlay exists
+	        ensureZoomOverlay();
+
+	        // Always show details first: reset scroll to top (affects mobile where content scrolls)
+	        const contentWrapForScroll = modal.querySelector('.modal-content');
+	        if (contentWrapForScroll) contentWrapForScroll.scrollTop = 0;
 	        
 	        // Show modal
 	        modal.classList.add('active');
@@ -444,6 +499,32 @@
 	    function closeModal() {
 	        modal.classList.remove('active');
 	        document.body.style.overflow = ''; // Restore scrolling
+		}
+
+		// Simple lightbox within the modal
+		function ensureZoomOverlay() {
+			if (!modal.querySelector('.modal-image-zoom')) {
+				const overlay = document.createElement('div');
+				overlay.className = 'modal-image-zoom';
+				overlay.innerHTML = '<img alt="Zoomed image" />';
+				modal.querySelector('.modal-container')?.appendChild(overlay);
+				// Close on overlay click
+				overlay.addEventListener('click', () => overlay.classList.remove('active'));
+				// Close via ESC while overlay open
+				document.addEventListener('keydown', (e) => {
+					if (e.key === 'Escape' && overlay.classList.contains('active')) {
+						overlay.classList.remove('active');
+					}
+				});
+			}
+		}
+
+		function openZoom(src, alt) {
+			const overlay = modal.querySelector('.modal-image-zoom');
+			if (!overlay) return;
+			const img = overlay.querySelector('img');
+			if (img) { img.src = src; img.alt = alt || 'Zoomed image'; }
+			overlay.classList.add('active');
 		}
 
 		// Initial animations
@@ -511,6 +592,9 @@
 					el.appendChild(document.createTextNode(' '));
 				});
 			});
+
+			// After splitting, re-fit any affected headings
+			autoFitHeadings();
 
 			// Services: interactive 3D tilt + parallax glow
 			const svcCards = document.querySelectorAll('.service-card');
