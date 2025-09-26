@@ -4,206 +4,72 @@
 	console.log('script.js loaded: v2');
 
 	// Define once to avoid "already been declared"
-	window.projectsData = window.projectsData || {
-		"airport": {
-			title: "Sangley Point Domestic Airport",
-			year: "2023",
-			category: "ARCHITECTURE",
-			description: "A domestic airport concept designed to enhance regional connectivity with efficient passenger flow, ample natural light, and clear wayfinding.",
-			location: "Cavite, Philippines",
-			area: "—",
-			images: [
-				"portfolio/airport/1.png",
-				"portfolio/airport/2.png",
-				"portfolio/airport/3.png",
-				"portfolio/airport/4.png"
-			]
-		},
-		"amping": {
-			title: "Amping Children's Hospital",
-			year: "2022",
-			category: "HOSPITAL",
-			description: "A children's hospital in Tagbilaran City, Bohol focused on healing environments, daylight, and family-centered care.",
-			location: "Tagbilaran City, Bohol, Philippines",
-			area: "—",
-			images: [
-				"portfolio/amping/1.png",
-				"portfolio/amping/2.png",
-				"portfolio/amping/3.png",
-				"portfolio/amping/4.png",
-				"portfolio/amping/5.png",
-				"portfolio/amping/6.png",
-				"portfolio/amping/7.png",
-				"portfolio/amping/8.png"
-			]
-		},
-		"marahuyo": {
-			title: "Marahuyo: Calamba Baywalk Revitalization",
-			year: "2021",
-			category: "ARCHITECTURE",
-			description: "Revitalization of the existing Calamba Laguna baywalk to enhance public space, connectivity, and community activity.",
-			location: "Calamba, Laguna, Philippines",
-			area: "—",
-			images: [
-				"portfolio/marahuyo/1.png",
-				"portfolio/marahuyo/2.png",
-				"portfolio/marahuyo/3.png"
-			]
-		},
-		"marikina": {
-			title: "Marikina Riverside Revitalization",
-			year: "2020",
-			category: "PLANNING",
-			description: "Revitalization of an unused lot beside the Marikina River with flood-resilient features, public spaces, and community-focused programs.",
-			location: "Marikina, Philippines",
-			area: "—",
-			images: [
-				"portfolio/marikina/1.jpg",
-				"portfolio/marikina/2.jpg",
-				"portfolio/marikina/3.jpg",
-				"portfolio/marikina/4.jpg"
-			]
-		},
-		"subdivision": {
-			title: "Hinabi Subdivision Complex",
-			year: "2019",
-			category: "RESIDENTIAL",
-			description: "A subdivision complex plan emphasizing neighborhood connectivity, open spaces, and livable streets.",
-			location: "General Trias, Cavite, Philippines",
-			area: "—",
-			images: [
-				"portfolio/subdivision/PAGE 1.png",
-				"portfolio/subdivision/PAGE 2.png",
-				"portfolio/subdivision/PAGE 3.png",
-				"portfolio/subdivision/PAGE 4.png"
-			]
-		}
-	};
+	window.projectsData = window.projectsData || {};
 
-	// Add Plaza project
-	window.projectsData["plaza"] = {
-		title: "Plaza",
-		year: "2022",
-		category: "PLANNING",
-		description: "A public plaza concept focusing on circulation, shade, and community gathering.",
-		location: "—",
-		area: "—",
-		images: [
-			"portfolio/plaza/plaza.png"
-		]
-	};
-
-	document.addEventListener('DOMContentLoaded', function() {
-		// Preloader + orchestrated animation start
-		const preloader = document.querySelector('.preloader');
-		let animationsStarted = false;
-		function startAllAnimationsOnce() {
-			if (animationsStarted) return;
-			animationsStarted = true;
-			initAnimations();
-			initScrollAnimations();
-		}
-
-		if (preloader) {
-			window.addEventListener('load', function() {
-				setTimeout(function() {
-					preloader.style.opacity = '0';
-					setTimeout(function() {
-						preloader.style.display = 'none';
-						document.body.classList.remove('loading');
-						// Start animations right after preloader hides
-						startAllAnimationsOnce();
-					}, 500);
-				}, 1500);
-			});
-			// Safety: if for some reason the above doesn't run, start after a max timeout
-			setTimeout(startAllAnimationsOnce, 3500);
-		} else {
-			// No preloader present — start after full load for smoother timing
-			window.addEventListener('load', startAllAnimationsOnce);
-		}
-
-	    // Custom cursor (smooth, not overly delayed)
+	// Custom cursor (smooth, not overly delayed)
 	    const cursor = document.querySelector('.cursor');
 	    const cursorFollower = document.querySelector('.cursor-follower');
 
-	    if (cursor && cursorFollower) {
+		if (cursor && cursorFollower) {
+			// Enable custom cursor only for desktops / wide viewports
+			const enableCustomCursor = () => {
+				if (window.innerWidth >= 900) document.body.classList.add('use-custom-cursor');
+				else document.body.classList.remove('use-custom-cursor');
+			};
+			enableCustomCursor();
+			window.addEventListener('resize', enableCustomCursor);
 	        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
 	        let dotX = mouseX, dotY = mouseY; // inner dot
 	        let ringX = mouseX, ringY = mouseY; // outer ring
 	        const dotEase = 0.35;   // dot easing (faster)
 	        let ringEase = 0.18;    // ring easing (slightly slower)
 
-	        document.addEventListener('mousemove', (e) => {
-	            mouseX = e.clientX;
-	            mouseY = e.clientY;
-	        });
+			// Lightweight custom cursor (dot + follower) — no trail
+			(function initCustomCursor() {
+				const cursor = document.querySelector('.cursor');
+				const cursorFollower = document.querySelector('.cursor-follower');
+				if (!cursor || !cursorFollower) return;
 
-	        function animateCursor() {
-	            // Lerp towards mouse
-	            dotX += (mouseX - dotX) * dotEase;
-	            dotY += (mouseY - dotY) * dotEase;
-	            ringX += (mouseX - ringX) * ringEase;
-	            ringY += (mouseY - ringY) * ringEase;
+				const setCursorClass = () => {
+					if (window.innerWidth >= 900) document.body.classList.add('use-custom-cursor');
+					else document.body.classList.remove('use-custom-cursor');
+				};
+				setCursorClass();
+				window.addEventListener('resize', setCursorClass);
 
-	            // Adaptive catch-up so the ring never feels "super delayed"
-	            const dx = dotX - ringX;
-	            const dy = dotY - ringY;
-	            const dist = Math.hypot(dx, dy);
-	            if (dist > 60) {
-	                // temporarily increase ease to catch up smoothly
-	                ringEase = Math.min(0.32, 0.18 + (dist - 60) / 300);
-	            } else {
-	                ringEase = Math.max(0.18, ringEase * 0.98);
-	            }
+				let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+				let dotX = mouseX, dotY = mouseY;
+				let ringX = mouseX, ringY = mouseY;
 
-	            cursor.style.left = dotX + 'px';
-	            cursor.style.top = dotY + 'px';
-	            cursorFollower.style.left = ringX + 'px';
-	            cursorFollower.style.top = ringY + 'px';
-	            requestAnimationFrame(animateCursor);
-	        }
-	        requestAnimationFrame(animateCursor);
+				const dotEase = 0.36;
+				const ringEase = 0.14;
 
-	        // Cursor hover effect on links and buttons
-	        const links = document.querySelectorAll('a, button, .filter-btn, .nav-toggle');
-	        links.forEach(link => {
-	            link.addEventListener('mouseenter', function() {
-	                cursor.style.width = '30px';
-	                cursor.style.height = '30px';
-	                cursorFollower.style.opacity = '0';
-	            });
-	            link.addEventListener('mouseleave', function() {
-	                cursor.style.width = '8px';
-	                cursor.style.height = '8px';
-	                cursorFollower.style.opacity = '0.7';
-	            });
-	        });
-	    }
+				document.addEventListener('mousemove', (e) => {
+					mouseX = e.clientX;
+					mouseY = e.clientY;
+				}, { passive: true });
 
-	    // Navigation toggle
-		const navToggle = document.querySelector('.nav-toggle');
-		const navigation = document.querySelector('.navigation');
-		const navClose = document.querySelector('.nav-close');
-    
-		if (navToggle && navigation) {
-			// Open/close via the hamburger itself
-			navToggle.addEventListener('click', function() {
-				const willOpen = !navigation.classList.contains('active');
-				navToggle.classList.toggle('active', willOpen);
-				navigation.classList.toggle('active', willOpen);
-				document.body.classList.toggle('nav-open', willOpen);
-			});
+				function raf() {
+					dotX += (mouseX - dotX) * dotEase;
+					dotY += (mouseY - dotY) * dotEase;
+					ringX += (mouseX - ringX) * ringEase;
+					ringY += (mouseY - ringY) * ringEase;
+					// Use left/top and keep CSS translate(-50%,-50%) for proper centering
+					cursor.style.left = dotX + 'px';
+					cursor.style.top = dotY + 'px';
+					cursorFollower.style.left = ringX + 'px';
+					cursorFollower.style.top = ringY + 'px';
+					requestAnimationFrame(raf);
+				}
+				requestAnimationFrame(raf);
 
-			// Optional dedicated close button (if present)
-			if (navClose) {
-				navClose.addEventListener('click', function() {
-					navToggle.classList.remove('active');
-					navigation.classList.remove('active');
-					document.body.classList.remove('nav-open');
+				// Hover effects
+				const hoverTargets = document.querySelectorAll('a, button, .filter-btn, .nav-toggle');
+				hoverTargets.forEach(el => {
+					el.addEventListener('mouseenter', () => { cursor.style.width = '26px'; cursor.style.height = '26px'; cursorFollower.style.opacity = '0'; });
+					el.addEventListener('mouseleave', () => { cursor.style.width = '8px'; cursor.style.height = '8px'; cursorFollower.style.opacity = '0.75'; });
 				});
-			}
-
+			})();
 	        // Helper to close navigation
 			function closeNavigation() {
 				navToggle.classList.remove('active');
@@ -475,7 +341,7 @@
 			items = Array.from(track.children);
 
 			let index = originalCount; // start at the first original
-			let autoplayInterval = 4000;
+			let autoplayInterval = 4000; // slowed to 4s for better readability
 			let timer = null;
 			let isAnimating = false;
 
@@ -485,11 +351,12 @@
 			}
 
 			function slideTo(i, withTransition = true) {
-				const gap = getGap();
-				let offset = 0;
-				for (let k = 0; k < i; k++) {
-					offset += items[k].getBoundingClientRect().width + gap;
-				}
+				// Compute offset by measuring distance between the first item and target item
+				const firstRect = items[0].getBoundingClientRect();
+				const targetRect = items[i].getBoundingClientRect();
+				// offset is how far the target's left is from first's left plus any current scroll left of the track
+				const containerLeft = track.getBoundingClientRect().left;
+				const offset = (targetRect.left - firstRect.left);
 				if (withTransition) track.style.transition = 'transform 0.6s cubic-bezier(0.22,1,0.36,1)';
 				else track.style.transition = 'none';
 				track.style.transform = `translateX(-${offset}px)`;
@@ -511,12 +378,12 @@
 
 			track.addEventListener('transitionend', () => {
 				isAnimating = false;
-				// when we reach the end clones, jump back to the identical original without transition
+				// Seamless wrap: if we've moved past the cloned region, shift index by +/- originalCount
 				if (index >= originalCount * 2) {
-					index = originalCount;
+					index = index - originalCount;
 					slideTo(index, false);
 				} else if (index < originalCount) {
-					index = originalCount + (index % originalCount);
+					index = index + originalCount;
 					slideTo(index, false);
 				}
 			});
@@ -542,8 +409,70 @@
 			});
 
 			// initial placement (no transition)
-			slideTo(index, false);
-			start();
+			// Use requestAnimationFrame to ensure layout & fonts are settled so measurements align perfectly
+			requestAnimationFrame(() => { slideTo(index, false); start(); });
+
+			// Pointer drag / swipe support (more robust)
+			let pointerDown = false;
+			let startX = 0;
+			let startOffset = 0;
+			const dragThreshold = 40; // px
+
+			function getCurrentTranslate() {
+				const cs = window.getComputedStyle(track);
+				const transform = cs.transform || cs.webkitTransform;
+				if (!transform || transform === 'none') return 0;
+				const match = transform.match(/matrix\(([^,]+),[^,]+,[^,]+,[^,]+,([^,]+),/);
+				if (match) return parseFloat(match[2]);
+				// fallback for matrix3d
+				const m3 = transform.match(/matrix3d\(.*,([-0-9.]+)\)$/);
+				if (m3) return parseFloat(m3[1]);
+				return 0;
+			}
+
+			track.addEventListener('pointerdown', (e) => {
+				pointerDown = true;
+				// stop any running animation and allow immediate dragging
+				stop();
+				isAnimating = false;
+				startX = e.clientX;
+				startOffset = getCurrentTranslate();
+				track.style.transition = 'none';
+				track.setPointerCapture && track.setPointerCapture(e.pointerId);
+			});
+
+			let lastPointerX = null;
+			track.addEventListener('pointermove', (e) => {
+				if (!pointerDown) return;
+				lastPointerX = e.clientX;
+				const dx = e.clientX - startX;
+				// apply drag delta to the starting offset (note: translate values are negative when moved left)
+				const newTranslate = startOffset + dx;
+				track.style.transform = `translateX(${newTranslate}px)`;
+			});
+
+			function endDrag(e) {
+				if (!pointerDown) return;
+				pointerDown = false;
+				// Some pointerup events on certain touch devices may not include clientX — use lastPointerX as fallback
+				const clientX = (e && typeof e.clientX === 'number') ? e.clientX : lastPointerX;
+				const dx = (typeof clientX === 'number' ? clientX : startX) - startX;
+				try { track.releasePointerCapture && track.releasePointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+				// If user dragged beyond threshold, go next/prev accordingly
+				if (Math.abs(dx) > dragThreshold) {
+					if (dx < 0) next(); else prev();
+				} else {
+					// snap back to current index
+					slideTo(index, true);
+				}
+				// resume autoplay after short delay
+				setTimeout(start, 350);
+				lastPointerX = null;
+			}
+
+			track.addEventListener('pointerup', endDrag);
+			track.addEventListener('pointercancel', endDrag);
+			track.addEventListener('pointerleave', endDrag);
 		})();
 	    
 	    // Modal functions
@@ -932,5 +861,4 @@
 			// Initial state: All with limit
 			applyFilterAndLimit('all');
 		})();
-    });
-})();
+	})();
