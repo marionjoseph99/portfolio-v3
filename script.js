@@ -30,6 +30,9 @@
 				const cursorFollower = document.querySelector('.cursor-follower');
 				if (!cursor || !cursorFollower) return;
 
+				// Only enable custom cursor on desktop-sized viewports. Bail out early on mobile
+				if (window.innerWidth < 900) return;
+
 				const setCursorClass = () => {
 					if (window.innerWidth >= 900) document.body.classList.add('use-custom-cursor');
 					else document.body.classList.remove('use-custom-cursor');
@@ -70,29 +73,36 @@
 					el.addEventListener('mouseleave', () => { cursor.style.width = '8px'; cursor.style.height = '8px'; cursorFollower.style.opacity = '0.75'; });
 				});
 			})();
-	        // Helper to close navigation
+			// Navigation element references (may be null if DOM differs)
+			const navToggle = document.querySelector('.nav-toggle');
+			const navigation = document.querySelector('.navigation');
+			const navClose = document.querySelector('.nav-close');
+
+			// Helper to close navigation
 			function closeNavigation() {
-				navToggle.classList.remove('active');
-				navigation.classList.remove('active');
+				if (navToggle) navToggle.classList.remove('active');
+				if (navigation) navigation.classList.remove('active');
 				document.body.classList.remove('nav-open');
 			}
 
-	        // Close navigation with ESC key
-	        document.addEventListener('keydown', function(e) {
-	            if (e.key === 'Escape' && navigation.classList.contains('active')) {
-	                closeNavigation();
-	            }
-	        });
+			// Close navigation with ESC key (guard navigation to avoid runtime errors)
+			document.addEventListener('keydown', function(e) {
+				if (e.key === 'Escape' && navigation && navigation.classList && navigation.classList.contains('active')) {
+					closeNavigation();
+				}
+			});
 
 	        // Close when clicking background overlay
-	        const navBg = navigation.querySelector('.nav-bg');
-	        if (navBg) {
-	            navBg.addEventListener('click', closeNavigation);
-	        }
+			if (navigation && typeof navigation.querySelector === 'function') {
+				const navBg = navigation.querySelector('.nav-bg');
+				if (navBg) {
+					navBg.addEventListener('click', closeNavigation);
+				}
+			}
 
 	        // Close on nav link click and smooth-scroll to target section
-	        const navLinks = navigation.querySelectorAll('.nav-link');
-	        navLinks.forEach(link => {
+		const navLinks = navigation && typeof navigation.querySelectorAll === 'function' ? navigation.querySelectorAll('.nav-link') : [];
+		Array.from(navLinks).forEach(link => {
 	            link.addEventListener('click', function(e) {
 	                const href = this.getAttribute('href');
 	                if (href && href.startsWith('#')) {
@@ -105,6 +115,28 @@
 	                }
 	            });
 	        });
+
+			// Ensure the hamburger toggle actually opens/closes the navigation
+			if (navToggle) {
+				navToggle.setAttribute('role', 'button');
+				navToggle.setAttribute('aria-label', 'Toggle navigation');
+				navToggle.setAttribute('aria-expanded', 'false');
+				navToggle.addEventListener('click', function (e) {
+					e.preventDefault();
+					const willOpen = !navToggle.classList.contains('active');
+					navToggle.classList.toggle('active', willOpen);
+					if (navigation) navigation.classList.toggle('active', willOpen);
+					document.body.classList.toggle('nav-open', willOpen);
+					navToggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+				});
+			}
+
+			// Close button inside the nav (small X)
+			if (navClose) {
+				navClose.setAttribute('role', 'button');
+				navClose.setAttribute('aria-label', 'Close navigation');
+				navClose.addEventListener('click', function (e) { e.preventDefault(); closeNavigation(); });
+			}
 	    }
 
 	    // Projects filter
@@ -768,7 +800,30 @@
 			});
 		}
 
-		// Initialize all animations: handled by startAllAnimationsOnce()
+		// Initialize all animations: run safely so failures don't stop other scripts
+		function startAllAnimationsOnce() {
+			// Run once only
+			if (startAllAnimationsOnce._ran) return;
+			startAllAnimationsOnce._ran = true;
+			try {
+				initAnimations();
+			} catch (err) {
+				console.warn('initAnimations failed:', err);
+			}
+			try {
+				initScrollAnimations();
+			} catch (err) {
+				console.warn('initScrollAnimations failed:', err);
+			}
+		}
+		// Ensure animations are initialized after DOM & assets settle. This is defensive
+		// so an error in one part won't prevent other features (like the testimonials carousel)
+		if (document.readyState === 'complete') {
+			startAllAnimationsOnce();
+		} else {
+			document.addEventListener('DOMContentLoaded', startAllAnimationsOnce);
+			window.addEventListener('load', startAllAnimationsOnce);
+		}
 
 		// Gallery setup
 		(function initGallery(){

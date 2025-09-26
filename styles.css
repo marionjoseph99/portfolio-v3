@@ -34,10 +34,14 @@ html, body {
 html { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.22) transparent; }
 
 /* Prevent flash of unanimated hero text while loading */
+/* During the loading state we keep the hero content hidden/offset but avoid skew
+   so it doesn't appear tilted if JS/animations haven't run yet. */
 body.loading .hero-word,
 body.loading .hero-quote {
     opacity: 0;
-    transform: translateY(40px) skewY(6deg);
+    /* only translate on load; remove skew which can leave a tilted layout
+       on devices where animations don't run or when the loading class lingers */
+    transform: translateY(40px);
     filter: blur(6px);
 }
 
@@ -109,6 +113,11 @@ button, input, textarea, select {
 body.use-custom-cursor, body.use-custom-cursor a, body.use-custom-cursor button, body.use-custom-cursor input, body.use-custom-cursor textarea, body.use-custom-cursor select {
     cursor: none;
 }
+
+/* Hide custom cursor elements by default (mobile). They are only shown when JS adds
+   the `use-custom-cursor` class on <body> (desktop-sized viewports) */
+.cursor, .cursor-follower { display: none; }
+body.use-custom-cursor .cursor, body.use-custom-cursor .cursor-follower { display: block; }
 
 section {
     padding: clamp(4rem, 10vw, 10rem) 0;
@@ -518,7 +527,9 @@ body.nav-open { overflow: hidden; height: 100vh; }
     display: inline-block;
     white-space: nowrap;
     margin-right: 0.35rem;
-    vertical-align: baseline; /* align words to baseline so wrapped lines keep consistent spacing */
+    /* Align the top edge of each inline-block word so different font sizes stack
+       vertically without creating a slanted staircase effect. */
+    vertical-align: top;
     overflow: visible; /* ensure inline-block words don't clip large glyphs */
 }
 
