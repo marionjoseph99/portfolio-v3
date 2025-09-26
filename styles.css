@@ -35,7 +35,8 @@ html, body {
 html { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.22) transparent; }
 
 /* Prevent flash of unanimated hero text while loading */
-body.loading .hero-word {
+body.loading .hero-word,
+body.loading .hero-quote {
     opacity: 0;
     transform: translateY(40px) skewY(6deg);
     filter: blur(6px);
@@ -386,6 +387,10 @@ body.nav-open { overflow: hidden; height: 100vh; }
     gap: 1rem;
 }
 
+/* Add breathing room below social buttons so they don't sit flush against the divider */
+.nav-social { margin-bottom: 1rem; }
+@media (max-width: 640px) { .nav-social { margin-bottom: 0.6rem; } }
+
 .social-link {
     display: inline-block;
     padding: 0.5rem;
@@ -408,6 +413,9 @@ body.nav-open { overflow: hidden; height: 100vh; }
     display: flex;
     align-items: center;
     overflow: hidden;
+    /* keep the hero content inset from the viewport edges */
+    padding-left: clamp(1.5rem, 5vw, 5rem);
+    padding-right: clamp(1.5rem, 5vw, 5rem);
 }
 
 .hero-bg {
@@ -437,16 +445,47 @@ body.nav-open { overflow: hidden; height: 100vh; }
 }
 
 .hero-title {
-    font-size: clamp(2.5rem, 10vw, 7rem);
+    font-size: clamp(2.2rem, 9.5vw, 6rem);
     font-weight: 800;
-    line-height: 1;
+    line-height: 1.2;
     margin-bottom: 2rem;
     text-transform: uppercase;
 }
 
+/* Inline accent for highlighted words inside hero titles/quotes */
+.hero-title .accent {
+    color: var(--color-accent);
+}
+
+/* Simple quote wrapper inside the hero */
+.hero-quote {
+    display: block;
+}
+
+/* Mobile-friendly adjustments for hero quote */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: clamp(1.6rem, 9vw, 3.2rem); /* keep readable but smaller */
+        line-height: 1.18;
+        margin-bottom: 1rem;
+        white-space: normal; /* allow wrapping between words */
+    }
+
+    .hero { padding-left: 1.25rem; padding-right: 1.25rem; }
+
+    /* move scroll/footer slightly up so text and footer don't overlap */
+    .hero-scroll { bottom: 1.25rem; left: 1.25rem; }
+    .hero-footer { bottom: 1.25rem; right: 1.25rem; }
+}
+
+/* Extra small screens: ensure the quote stays visible and not too tall */
+@media (max-width: 420px) {
+    .hero-title { font-size: clamp(1.25rem, 9.5vw, 2.6rem); }
+}
+
 .hero-word {
     display: block;
-    overflow: hidden;
+    overflow: visible; /* allow glyphs or masks to render without being clipped */
     transform-origin: left;
 }
 
@@ -466,6 +505,58 @@ body.nav-open { overflow: hidden; height: 100vh; }
 
 .hero-word.accent {
     color: var(--color-accent);
+}
+
+/* Keep individual words intact and prevent mid-word breaks; allow wrapping only between words */
+.hero-quote .hero-word {
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 0.35rem;
+    vertical-align: baseline; /* align words to baseline so wrapped lines keep consistent spacing */
+    overflow: visible; /* ensure inline-block words don't clip large glyphs */
+}
+
+.hero-quote .accent { color: var(--color-accent); }
+
+/* Vary the sizes of individual words for a more dynamic hero layout.
+   Use clamp so sizes stay responsive; tweak nth-child indices to change emphasis. */
+.hero-quote .hero-word { font-family: var(--font-heading); font-weight: 800; }
+.hero-quote .hero-word:nth-child(1) { /* Architecture */
+    font-size: clamp(1.8rem, 9vw, 5.2rem);
+}
+.hero-quote .hero-word:nth-child(2) { /* is */
+    font-size: clamp(1.1rem, 4.5vw, 2.6rem);
+}
+.hero-quote .hero-word:nth-child(3) { /* the */
+    font-size: clamp(1.1rem, 4.5vw, 2.6rem);
+}
+.hero-quote .hero-word:nth-child(4) { /* thoughtful */
+    font-size: clamp(1.25rem, 5.5vw, 3.6rem);
+}
+.hero-quote .hero-word:nth-child(5) { /* making */
+    font-size: clamp(1.1rem, 4.5vw, 2.8rem);
+}
+.hero-quote .hero-word:nth-child(6) { /* of */
+    font-size: clamp(1rem, 3.8vw, 2.4rem);
+}
+.hero-quote .hero-word:nth-child(7) { /* places (accented) */
+    font-size: clamp(1.4rem, 7.2vw, 4rem);
+}
+
+/* Mobile overrides: reduce extremes so the quote fits well */
+@media (max-width: 768px) {
+    .hero-quote .hero-word:nth-child(1) { font-size: clamp(1.4rem, 7.5vw, 3rem); }
+    .hero-quote .hero-word:nth-child(4) { font-size: clamp(1.1rem, 6.2vw, 2.4rem); }
+    .hero-quote .hero-word:nth-child(7) { font-size: clamp(1.2rem, 8vw, 2.8rem); }
+    .hero-quote .hero-word:nth-child(2),
+    .hero-quote .hero-word:nth-child(3),
+    .hero-quote .hero-word:nth-child(5),
+    .hero-quote .hero-word:nth-child(6) { font-size: clamp(0.95rem, 4.5vw, 1.6rem); }
+}
+
+@media (max-width: 420px) {
+    .hero-quote .hero-word:nth-child(1) { font-size: clamp(1.25rem, 9.5vw, 2.2rem); }
+    .hero-quote .hero-word:nth-child(7) { font-size: clamp(1.1rem, 8.5vw, 2.4rem); }
 }
 
 .hero-scroll {
@@ -587,6 +678,25 @@ body.nav-open { overflow: hidden; height: 100vh; }
     margin-bottom: 4rem;
 }
 
+/* Testimonials carousel styles */
+.testimonials-container { margin-top: 2.5rem; }
+.testimonials-title { font-family: var(--font-heading); font-size: clamp(1.05rem, 2.2vw, 1.35rem); margin-bottom: 1rem; color: var(--color-light); }
+.testimonials-carousel { overflow: hidden; position: relative; }
+.testimonials-track { display: flex; gap: 1rem; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); align-items: stretch; }
+.testimonial { width: clamp(260px, 32%, 420px); flex: 0 0 auto; background: #0f0f0f; border: 1px solid rgba(213,255,64,0.12); padding: 1.1rem; border-radius: 10px; box-sizing: border-box; }
+.testimonial p, .testimonial .testimonial-text { margin: 0 0 .6rem 0; color: var(--color-light); line-height: 1.45; }
+.testimonial .testimonial-header { display:flex; gap:0.75rem; align-items:center; margin-bottom:.6rem; }
+.testimonial-avatar { width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid rgba(213,255,64,0.16); }
+.testimonial-header-text { display:flex; flex-direction:column; }
+.testimonial-author { font-weight:800; color:var(--color-light); }
+.testimonial-role { color: var(--color-secondary); font-size:0.9rem; }
+
+/* Small screens: make cards narrower and stack to single column on very small widths */
+@media (max-width: 640px) {
+    .testimonials-track { gap: .75rem; }
+    .testimonial { width: 90%; }
+}
+
 .about-image {
     position: relative;
     height: 100%;
@@ -607,7 +717,7 @@ body.nav-open { overflow: hidden; height: 100vh; }
     justify-content: center;
     background: var(--color-tertiary);
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* allow large hero words to render without being clipped */
 }
 
 .architect-placeholder {
@@ -1040,7 +1150,7 @@ select.error {
 .contact-method h4 { font-size: 0.9rem; letter-spacing: .04em; text-transform: uppercase; margin-bottom: .35rem; color: var(--color-light); }
 .contact-method a, .contact-method address { color: var(--color-secondary); font-style: normal; }
 
-.social-links { display: flex; gap: 0.6rem 0.8rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.social-links { display: flex; gap: 0.6rem 0.8rem; flex-wrap: wrap; margin-top: 0.5rem; margin-bottom: 1rem; }
 .social-link { display: inline-flex; align-items: center; padding: 0.45rem 0.75rem; border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; color: var(--color-light); transition: background-color .25s ease, transform .2s ease; }
 .social-link:hover { background: rgba(255,255,255,0.06); transform: translateY(-1px); }
 

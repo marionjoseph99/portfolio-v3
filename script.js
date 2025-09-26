@@ -453,6 +453,98 @@
 				if (e.key === 'ArrowLeft') prevBtn && prevBtn.click();
 			});
 		}
+
+		// --- Testimonials carousel (infinite, responsive) ---
+		(function initTestimonialsCarousel() {
+			const carousel = document.querySelector('.testimonials-carousel');
+			if (!carousel) return;
+			const track = carousel.querySelector('.testimonials-track');
+			if (!track) return;
+			let items = Array.from(track.children);
+			if (items.length === 0) return;
+
+			// Clone items before and after for seamless looping
+			const originalCount = items.length;
+			const beforeClones = items.map(node => node.cloneNode(true));
+			const afterClones = items.map(node => node.cloneNode(true));
+
+			beforeClones.forEach(n => track.insertBefore(n, track.firstChild));
+			afterClones.forEach(n => track.appendChild(n));
+
+			// refresh item list to include clones
+			items = Array.from(track.children);
+
+			let index = originalCount; // start at the first original
+			let autoplayInterval = 4000;
+			let timer = null;
+			let isAnimating = false;
+
+			function getGap() {
+				const gap = getComputedStyle(track).gap;
+				return gap ? parseFloat(gap) : 0;
+			}
+
+			function slideTo(i, withTransition = true) {
+				const gap = getGap();
+				let offset = 0;
+				for (let k = 0; k < i; k++) {
+					offset += items[k].getBoundingClientRect().width + gap;
+				}
+				if (withTransition) track.style.transition = 'transform 0.6s cubic-bezier(0.22,1,0.36,1)';
+				else track.style.transition = 'none';
+				track.style.transform = `translateX(-${offset}px)`;
+			}
+
+			function next() {
+				if (isAnimating) return;
+				isAnimating = true;
+				index++;
+				slideTo(index, true);
+			}
+
+			function prev() {
+				if (isAnimating) return;
+				isAnimating = true;
+				index--;
+				slideTo(index, true);
+			}
+
+			track.addEventListener('transitionend', () => {
+				isAnimating = false;
+				// when we reach the end clones, jump back to the identical original without transition
+				if (index >= originalCount * 2) {
+					index = originalCount;
+					slideTo(index, false);
+				} else if (index < originalCount) {
+					index = originalCount + (index % originalCount);
+					slideTo(index, false);
+				}
+			});
+
+			function start() { stop(); timer = setInterval(next, autoplayInterval); }
+			function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+			carousel.addEventListener('mouseenter', stop);
+			carousel.addEventListener('mouseleave', start);
+			carousel.addEventListener('focusin', stop);
+			carousel.addEventListener('focusout', start);
+
+			carousel.addEventListener('keydown', (e) => {
+				if (e.key === 'ArrowRight') next();
+				if (e.key === 'ArrowLeft') prev();
+			});
+
+			// Recalculate sizes on resize and snap to current index
+			let resizeTimeout = null;
+			window.addEventListener('resize', () => {
+				clearTimeout(resizeTimeout);
+				resizeTimeout = setTimeout(() => { slideTo(index, false); }, 120);
+			});
+
+			// initial placement (no transition)
+			slideTo(index, false);
+			start();
+		})();
 	    
 	    // Modal functions
 	    function openModal(projectData) {
@@ -531,16 +623,18 @@
 		function initAnimations() {
 			// Word-level hero animation if GSAP is available; otherwise leave text static
 			if (typeof window.gsap !== 'undefined') {
-				const heroWords = Array.from(document.querySelectorAll('.hero-word'));
+				// Support both older multi-word structure (.hero-word) and the new single .hero-quote
+				const heroWords = Array.from(document.querySelectorAll('.hero-word, .hero-quote'));
 				const heroTitle = document.querySelector('.hero-title');
 				// add sweep masks and set initial styles
 				heroWords.forEach(word => {
-					if (!word.querySelector('.reveal-mask')) {
+					// If this is a hero-quote (single node) we still add a mask for sweep
+					if (!word.querySelector || !word.querySelector('.reveal-mask')) {
 						const mask = document.createElement('span');
 						mask.className = 'reveal-mask';
 						word.appendChild(mask);
 					}
-					word.style.overflow = 'hidden';
+					if (word.style) word.style.overflow = 'hidden';
 				});
 
 				const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
