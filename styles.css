@@ -120,7 +120,7 @@ body.use-custom-cursor, body.use-custom-cursor a, body.use-custom-cursor button,
 body.use-custom-cursor .cursor, body.use-custom-cursor .cursor-follower { display: block; }
 
 section {
-    padding: clamp(4rem, 10vw, 10rem) 0;
+    padding: clamp(4rem, 10vw, 2rem) 0;
 }
 
 
@@ -615,6 +615,53 @@ body.nav-open { overflow: hidden; height: 100vh; }
     color: var(--color-secondary);
 }
 
+/* Scroll-to-top button */
+.scroll-top {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #0b0b0b;
+    display: grid;
+    place-items: center;
+    z-index: 9000;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    transform: translateY(12px) scale(0.98);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease;
+}
+.scroll-top.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+@media (max-width: 640px) {
+    .scroll-top { right: 0.8rem; bottom: 0.8rem; width: 40px; height: 40px; }
+}
+
+/* Arrow bobbing animation */
+@keyframes arrow-bob {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-6px) scale(1.01); }
+}
+.scroll-top.visible { animation: arrow-bob 2.6s ease-in-out infinite; }
+.scroll-top:hover { transform: translateY(0) scale(1.06); }
+.scroll-top:focus { outline: none; box-shadow: 0 0 0 4px rgba(213,255,64,0.12); }
+
+/* Global cursor hover 'negative' effect: when the custom cursor is active, hovering
+   anywhere in the document makes the inner dot larger and hides the follower ring. */
+/* Keep the cursor visuals simple — hover sizing controlled by JS hover handlers */
+
+/* Keep touch devices unaffected since the class isn't applied there; also ensure
+   interactive controls still show the same effect. */
+
 /* About Section */
 .section-number {
     font-family: var(--font-heading);
@@ -762,6 +809,37 @@ body.nav-open { overflow: hidden; height: 100vh; }
     background: linear-gradient(135deg, #1a1a1a, #333333);
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
+
+/* Cursor-only x-ray / negative effect: when `body.cursor-xray` is present
+   apply inversion / mix-blend to the cursor dot and follower ring. This keeps
+   the rest of the page untouched and localizes the effect inside the ring. */
+.cursor-follower { opacity: 0.75; }
+.cursor { mix-blend-mode: normal; z-index: 9999; }
+
+/* When JS adds `body.cursor-xray` we invert the view inside both the follower
+   ring and the small inner dot. Use stronger fallbacks (filter + !important)
+   since some browsers / stacking contexts can prevent mix-blend-mode from
+   producing the expected visual on tiny solid elements. */
+body.cursor-xray .cursor,
+body.cursor-xray .cursor-follower {
+    mix-blend-mode: difference !important;
+    background: rgba(255,255,255,0.06) !important;
+    backdrop-filter: invert(1) saturate(0.6) contrast(1.02) !important;
+    -webkit-backdrop-filter: invert(1) saturate(0.6) contrast(1.02) !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+    opacity: 0.95 !important;
+    /* Fallback: force an inversion on the element itself so small solid dots
+       still appear inverted even when blend modes don't hit. */
+    filter: invert(1) saturate(0.6) contrast(1.02) !important;
+}
+
+/* If you want the inner dot to KEEP the accent color while only the follower
+   ring shows the x-ray effect, replace the selector above with these two
+   rules instead (uncomment and remove the combined selector):
+
+/* body.cursor-xray .cursor { mix-blend-mode: normal; background: var(--color-accent) !important; filter: none !important; } */
+/* body.cursor-xray .cursor-follower { mix-blend-mode: difference !important; backdrop-filter: invert(1) !important; filter: none !important; } */
+
 
 .placeholder-content {
     display: flex;

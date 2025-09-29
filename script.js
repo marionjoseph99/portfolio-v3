@@ -6,6 +6,75 @@
 	// Define once to avoid "already been declared"
 	window.projectsData = window.projectsData || {};
 
+	// If no external project data was provided, populate a sensible default mapping
+	// from the local `portfolio/` folder so the modal has gallery images to show.
+	// This only runs when `projectsData` is empty and won't overwrite existing data.
+	if (!Object.keys(window.projectsData).length) {
+		window.projectsData = {
+			airport: {
+				title: 'Sangley Point Domestic Airport',
+				year: '2023',
+				category: 'Architecture',
+				description: 'Concept and design studies for a regional domestic terminal.',
+				location: 'Cavite, Philippines',
+				area: '',
+				images: [
+					'portfolio/airport/1.png',
+					'portfolio/airport/2.png',
+					'portfolio/airport/3.png',
+					'portfolio/airport/4.png'
+				]
+			},
+			amping: {
+				title: "Amping Children's Hospital",
+				year: '2022',
+				category: 'Hospital',
+				description: 'Hospital project with focus on pediatric wards and patient flow.',
+				location: '',
+				area: '',
+				images: [
+					'portfolio/amping/1.png','portfolio/amping/2.png','portfolio/amping/3.png','portfolio/amping/4.png','portfolio/amping/5.png','portfolio/amping/6.png','portfolio/amping/7.png','portfolio/amping/8.png'
+				]
+			},
+			marahuyo: {
+				title: 'Marahuyo: Baywalk Revitalization',
+				year: '2021',
+				category: 'Architecture',
+				description: 'Revitalization and public realm design for a waterfront promenade.',
+				location: '',
+				area: '',
+				images: ['portfolio/marahuyo/1.png','portfolio/marahuyo/2.png','portfolio/marahuyo/3.png']
+			},
+			marikina: {
+				title: 'Marikina Riverside Revitalization',
+				year: '2020',
+				category: 'Planning',
+				description: 'Riverside planning and landscape interventions.',
+				location: '',
+				area: '',
+				images: ['portfolio/marikina/1.jpg','portfolio/marikina/2.jpg','portfolio/marikina/3.jpg','portfolio/marikina/4.jpg']
+			},
+			subdivision: {
+				title: 'Hinabi Subdivision Complex',
+				year: '2019',
+				category: 'Residential',
+				description: 'Masterplanning and residential architecture studies.',
+				location: '',
+				area: '',
+				images: ['portfolio/subdivision/PAGE 1.png','portfolio/subdivision/PAGE 2.png','portfolio/subdivision/PAGE 3.png','portfolio/subdivision/PAGE 4.png']
+			},
+			plaza: {
+				title: 'Plaza',
+				year: '2022',
+				category: 'Planning',
+				description: 'Public plaza and urban space study.',
+				location: '',
+				area: '',
+				images: ['portfolio/plaza/plaza.png']
+			}
+		};
+	}
+
 	// Custom cursor (smooth, not overly delayed)
 	    const cursor = document.querySelector('.cursor');
 	    const cursorFollower = document.querySelector('.cursor-follower');
@@ -51,6 +120,8 @@
 					mouseX = e.clientX;
 					mouseY = e.clientY;
 				}, { passive: true });
+
+
 
 				function raf() {
 					dotX += (mouseX - dotX) * dotEase;
@@ -271,9 +342,24 @@
 		projectItems.forEach((item) => {
 			function activate() {
 				const projectId = item.getAttribute('data-project');
-				const projectData = window.projectsData[projectId];
+				let projectData = window.projectsData[projectId];
+				// Fallback: if projectsData isn't populated, derive minimal info from DOM
+				if (!projectData) {
+					const img = item.querySelector('img');
+					const titleEl = item.querySelector('h3');
+					projectData = {
+						title: (titleEl && titleEl.textContent) || 'Project',
+						year: item.querySelector('.project-year') ? item.querySelector('.project-year').textContent : '',
+						category: item.getAttribute('data-category') || '',
+						description: '',
+						location: '',
+						area: '',
+						images: img ? [ img.src ] : []
+					};
+				}
+				// show modal if we have at least a title or images
 				if (projectData) {
-					currentProjectId = projectId;
+					currentProjectId = projectId || null;
 					openModal(projectData);
 				}
 			}
@@ -824,6 +910,24 @@
 			document.addEventListener('DOMContentLoaded', startAllAnimationsOnce);
 			window.addEventListener('load', startAllAnimationsOnce);
 		}
+
+		// Scroll-to-top button behavior
+		(function initScrollTop() {
+			const btn = document.querySelector('.scroll-top');
+			if (!btn) return;
+			const SHOW_AFTER = 300; // px
+			function onScroll() {
+				if (window.scrollY > SHOW_AFTER) btn.classList.add('visible');
+				else btn.classList.remove('visible');
+			}
+			window.addEventListener('scroll', onScroll, { passive: true });
+			// initial state
+			onScroll();
+			btn.addEventListener('click', (e) => {
+				e.preventDefault();
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			});
+		})();
 
 		// Gallery setup
 		(function initGallery(){
