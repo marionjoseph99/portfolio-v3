@@ -265,6 +265,55 @@
 			});
 		}
 
+		// Counter animation for stats (counts up when the stats grid comes into view)
+		function initStatCounters() {
+			const statsGrid = document.querySelector('.stats-grid');
+			if (!statsGrid) return;
+			const statEls = statsGrid.querySelectorAll('.stat-number');
+
+			let countersRan = false;
+			const runCounters = () => {
+				if (countersRan) return;
+				countersRan = true;
+				statEls.forEach(el => {
+					const target = parseInt(el.getAttribute('data-target') || el.textContent || '0', 10) || 0;
+					const start = 0;
+					const duration = 1400; // ms
+					const startTime = performance.now();
+					const step = (now) => {
+						const elapsed = now - startTime;
+						const progress = Math.min(elapsed / duration, 1);
+						const value = Math.floor(start + (target - start) * easeOutCubic(progress));
+						el.textContent = value + (target >= 10 ? '+' : '');
+						if (progress < 1) requestAnimationFrame(step);
+					};
+					requestAnimationFrame(step);
+				});
+			};
+
+			function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+			if (window.ScrollTrigger) {
+				ScrollTrigger.create({ trigger: statsGrid, start: 'top 85%', onEnter: runCounters, onEnterBack: runCounters });
+			} else {
+				const io = new IntersectionObserver((entries, observer) => {
+					entries.forEach(entry => {
+						if (entry.isIntersecting) {
+							runCounters();
+							observer.disconnect();
+						}
+					});
+				}, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+				io.observe(statsGrid);
+			}
+
+			// If the stats grid is already visible on load, trigger counters immediately
+			try {
+				const rect = statsGrid.getBoundingClientRect();
+				if (rect.top <= window.innerHeight * 0.85) runCounters();
+			} catch (e) { /* ignore */ }
+		}
+
 		window.addEventListener('load', sizeProjectSideTitles);
 		window.addEventListener('resize', () => { sizeProjectSideTitles(); });
 
@@ -884,6 +933,9 @@
 					window.location.href = 'mailto:norioniomarjo@gmail.com?subject=Project%20Inquiry&body=Hi%20Marjo%2C%0D%0A%0D%0A';
 				}
 			});
+
+			// Counter animation for stats (counts up when the stats grid comes into view)
+			// NOTE: moved out of the contact form conditional so it runs regardless
 		}
 
 		// Initialize all animations: run safely so failures don't stop other scripts
@@ -901,6 +953,8 @@
 			} catch (err) {
 				console.warn('initScrollAnimations failed:', err);
 			}
+			// Ensure stat counters are also initialized
+			try { initStatCounters(); } catch (err) { console.warn('initStatCounters failed:', err); }
 		}
 		// Ensure animations are initialized after DOM & assets settle. This is defensive
 		// so an error in one part won't prevent other features (like the testimonials carousel)
